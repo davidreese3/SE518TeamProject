@@ -35,34 +35,20 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        /*String ipAddress = getClientIP();
-        String email = getEmail(request);
-        loginAttemptService.loginFailed(email);
-
-        if(exception.getCause() instanceof LockedException){
-            System.out.println("REDIRECTING??????");
-            response.sendRedirect("/403");
-            //String blockedMessage = messageSource.getMessage("auth.message.blocked", null, request.getLocale());
-            //addErrorMessage(request, response, blockedMessage);
-        } else {
-            loginAttemptService.loginFailed(email);
-            super.onAuthenticationFailure(request, response, exception);
-        }*/
-
         String ipAddress = getClientIP();
         loginAttemptService.loginFailed(ipAddress);
 
+        String errorMessage;
         if (loginAttemptService.isBlocked(ipAddress)) {
-            String blockedMessage;
             try {
-                blockedMessage = messageSource.getMessage("auth.message.blocked", null, request.getLocale());
+                errorMessage = messageSource.getMessage("auth.message.blocked", null, request.getLocale());
             } catch (NoSuchMessageException e) {
-                blockedMessage = "Your account is locked due to too many failed login attempts.";
+                errorMessage = "Your account is locked due to too many failed login attempts.";
             }
-            addErrorMessage(request, response, blockedMessage);
         } else {
-            super.onAuthenticationFailure(request, response, exception);
+            errorMessage = "Invalid username or password.";
         }
+        addErrorMessage(request, response, errorMessage);
     }
 
     private void addErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorMessage) throws IOException {

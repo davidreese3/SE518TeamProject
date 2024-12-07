@@ -41,6 +41,9 @@ public class WebSecurityConfig {
     @Autowired
     private LoginAttemptService loginAttemptService;
 
+    @Autowired
+    private RateLimitingFilter rateLimitingFilter;
+
 
     /*@Autowired
     public WebSecurityConfig(CustomAuthenticationFailureHandler failureHandler,
@@ -79,7 +82,9 @@ public class WebSecurityConfig {
             }
         });
 
-        http.addFilterBefore(accountLockFilter(), UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(accountLockFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
+
 
 
         // when access denied, show "/403" page

@@ -26,4 +26,11 @@ public class AppService {
     public WebUser getUserByEmail(String email) {
         return userDAO.getUserByEmail(email);
     }
+
+    public List<Role> getRolesByEmail(String email) {return userDAO.getRolesByEmail(email);}
+
+    public LoginAttempts getLoginAttemptsByEmail(String email) {return userDAO.getLoginAttemptsByEmail(email);}
+
+    public LoginAttempts addLoginAttempts(LoginAttempts loginAttempts) {return userDAO.addLoginAttempt(loginAttempts);}
+
 }

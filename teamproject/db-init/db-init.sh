@@ -39,7 +39,15 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
         PRIMARY KEY (email, role)
     );
 
+    CREATE TABLE IF NOT EXISTS login_attempts (
+      email VARCHAR(50) NOT NULL REFERENCES useracct(email) ON DELETE CASCADE,
+      attempts int NOT NULL DEFAULT 0,
+      lock_time TIMESTAMP NULL,
+      PRIMARY KEY (email)
+    );
+
 
   ALTER TABLE useracct OWNER TO docker;
   ALTER TABLE authority OWNER TO docker;
+  AlTER TABLE login_attempts OWNER TO docker;
 EOSQL

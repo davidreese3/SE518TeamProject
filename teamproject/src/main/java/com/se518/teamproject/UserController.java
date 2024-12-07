@@ -1,6 +1,8 @@
 package com.se518.teamproject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,15 +11,12 @@ import java.util.List;
 
 @Controller
 public class UserController {
+
+    @Autowired
     private AppService appService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserController(AppService appService, PasswordEncoder passwordEncoder){
-        this.appService = appService;
-    }
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public String viewAllUsers(Model model) {
@@ -78,7 +77,12 @@ public class UserController {
         return "ConfirmRegister";
     }
 
+    /*@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     public void setPasswordEncoder(PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
-    }
+    }*/
 }

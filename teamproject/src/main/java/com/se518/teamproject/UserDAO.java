@@ -13,4 +13,7 @@ public interface UserDAO {
     public WebUser registerUser(WebUser webUser);
     public WebUser getRegisteredUserInfoById(int id);
     public WebUser getUserByEmail(String email);
+    public List<Role> getRolesByEmail(String email);
+    public LoginAttempts getLoginAttemptsByEmail(String email);
+    public LoginAttempts addLoginAttempt(LoginAttempts loginAttempts);
 }

@@ -82,7 +82,6 @@ public class WebSecurityConfig {
             }
         });
 
-        //http.addFilterBefore(accountLockFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
 
 
@@ -96,7 +95,6 @@ public class WebSecurityConfig {
         http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
                 .failureHandler(failureHandler)
-                //.failureUrl("/login?error")
                 .defaultSuccessUrl("/landing")
         );
 
@@ -113,19 +111,6 @@ public class WebSecurityConfig {
 
 
         return http.build();
-    }
-
-    /*@Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        manager.setUsersByUsernameQuery("SELECT email, password, active FROM useracct WHERE email=?");
-        manager.setAuthoritiesByUsernameQuery("SELECT email, role FROM authority WHERE email=?");
-        return manager;
-    }*/
-
-    @Bean
-    public AccountLockFilter accountLockFilter() {
-        return new AccountLockFilter(loginAttemptService);
     }
 
     // needed for auto login

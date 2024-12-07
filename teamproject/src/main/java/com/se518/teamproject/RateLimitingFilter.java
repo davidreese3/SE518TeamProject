@@ -32,13 +32,11 @@ public class RateLimitingFilter implements Filter {
 
             synchronized (rateLimitInfo) {
                 if (now.isAfter(rateLimitInfo.getResetTime().plusSeconds(TIME_WINDOW))) {
-                    // Reset rate limit
                     rateLimitInfo.setResetTime(now);
                     rateLimitInfo.getRequestCount().set(0);
                 }
 
                 if (rateLimitInfo.getRequestCount().incrementAndGet() > MAX_REQUESTS) {
-                    // Invalidate session and redirect to login page
                     session.invalidate();
                     httpResponse.sendRedirect("/login?error=Too many requests. Please try again later.");
                     return;
@@ -48,14 +46,10 @@ public class RateLimitingFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    /*@Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization logic if needed
-    }*/
 
     @Override
     public void destroy() {
-        // Cleanup logic if needed
+        //
     }
 
     private static class RateLimitInfo {

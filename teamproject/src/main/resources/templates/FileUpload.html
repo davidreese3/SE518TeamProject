@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Serialization Demo</title>
+</head>
+<body>
+<h1>Serialization Exploit Demo</h1>
+<form method="POST" action="/upload" enctype="multipart/form-data">
+    <label for="file">Upload Serialized File:</label>
+    <input type="file" id="file" name="file" required>
+    <button type="submit">Upload</button>
+</form>
+<h2>Result:</h2>
+<p th:text="${message}">Upload a file to see the result.</p>
+</body>
+</html>

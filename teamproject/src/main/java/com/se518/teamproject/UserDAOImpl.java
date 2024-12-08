@@ -92,6 +92,7 @@ public class UserDAOImpl implements UserDAO {
         return webUser;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public WebUser getRegisteredUserInfoById(int id) {
         String SQL = "SELECT id, email, password, active, first, last " +
@@ -101,6 +102,7 @@ public class UserDAOImpl implements UserDAO {
         return jdbcTemplate.queryForObject(SQL, new Object[]{id}, new WebUserMapper());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public WebUser getUserByEmail(String email) {
         String SQL = "SELECT * FROM useracct WHERE email = ?";

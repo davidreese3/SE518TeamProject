@@ -39,11 +39,11 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authz -> {
             try {
                 authz
-                        .requestMatchers("/", "/login", "/user/register/**", "/logout").permitAll()
+                        .requestMatchers("/", "/login", "/user/register/**", "/logout", "/upload/**", "/file/").permitAll();
                         // Protected URLs
-                        .requestMatchers("/user/list/**").authenticated()
+                        //.requestMatchers("/user/list/**").authenticated()
                         // Any other request must be authenticated
-                        .anyRequest().authenticated();
+                        //.anyRequest().authenticated();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,13 +77,13 @@ public class WebSecurityConfig {
     }
 
     // needed for auto login
-    @Bean
-    public SecurityContextRepository securityContextRepository() {
-        return new DelegatingSecurityContextRepository(
-                new RequestAttributeSecurityContextRepository(),
-                new HttpSessionSecurityContextRepository()
-        );
-    }
+    // @Bean
+    // public SecurityContextRepository securityContextRepository() {
+    //     return new DelegatingSecurityContextRepository(
+    //             new RequestAttributeSecurityContextRepository(),
+    //             new HttpSessionSecurityContextRepository()
+    //     );
+    // }
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

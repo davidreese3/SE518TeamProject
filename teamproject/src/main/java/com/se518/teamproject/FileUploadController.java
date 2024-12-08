@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 
 @Controller
 public class FileUploadController {
-        @PostMapping("/file")
+        @PostMapping("/upload")
         public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
             try {
                 // Save the uploaded file temporarily

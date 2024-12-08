@@ -26,55 +26,49 @@ public class WebSecurityConfig {
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                // mapped by position to (username, password, active)
-                .usersByUsernameQuery("SELECT email, password, active FROM useracct "
-                        + " WHERE email=?")
-                // mapped by position to (username, role)
-                .authoritiesByUsernameQuery("select email, role FROM authority "
-                        + " WHERE email=?");
-        ;
+                .usersByUsernameQuery("SELECT email, password, active FROM useracct WHERE email=?")
+                .authoritiesByUsernameQuery("select email, role FROM authority WHERE email=?");
     }
-    @Bean
+
+      @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz -> {
             try {
                 authz
-                        .requestMatchers("/", "/login", "/user/register/**", "/logout", "/upload/**", "/file/").permitAll();
-                        // Protected URLs
+                .requestMatchers("/", "/login", "/user/register/**", "/logout", "/upload/**", "/file/").permitAll()
+                .anyRequest().authenticated();
+                        // Uncomment this line to protect URLs after login
                         //.requestMatchers("/user/list/**").authenticated()
-                        // Any other request must be authenticated
-                        //.anyRequest().authenticated();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
-        // when access denied, show "/403" page
-        http.exceptionHandling((exceptionHandling) -> exceptionHandling
+        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers("/upload/**", "/file/**") // Allow file upload without CSRF protection
+        );
+        http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .accessDeniedPage("/403"));
-        // "/login" allow custom login page
-        // "/login?error" displays login.html with error message
-        // "/userHome" default page when /login was the path.
+
         http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/landing")
+                .defaultSuccessUrl("/landing", true)  // Ensure this redirects to a valid page after successful login
         );
 
         http.logout(logout -> logout
-                .logoutUrl("/logout")                   // The URL to handle logout
-                .logoutSuccessUrl("/login?logout")      // Redirect URL after successful logout
-                .invalidateHttpSession(true)            // Invalidate session on logout
-                .deleteCookies("JSESSIONID")            // Remove session cookie
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
         );
 
-
-        // needed for auto-login
-        http.securityContext((securityContext) -> securityContext.requireExplicitSave(true));
+        http.securityContext(securityContext -> securityContext.requireExplicitSave(true));
 
         return http.build();
     }
+
 
     // needed for auto login
     // @Bean

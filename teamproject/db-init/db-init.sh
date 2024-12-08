@@ -14,7 +14,7 @@ set -e
 #        END IF;
 #   END
 #    \$\$;
-#EOSQL
+# EOSQL
 
 # Connect to the docker database and create tables
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL

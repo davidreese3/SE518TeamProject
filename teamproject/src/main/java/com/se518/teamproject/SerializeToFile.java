@@ -8,7 +8,7 @@ public class SerializeToFile {
 
     public static void main(String[] args) {
         try {
-            // Serialize legitimate data
+            // Serialize expected data
             SimpleData simpleData = new SimpleData("Original Text");
             serializeToFile(simpleData, "legitimate_data.txt");
 

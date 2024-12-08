@@ -3,7 +3,7 @@ services:
     image: postgres
     container_name: TPDB
     ports:
-      - 5431:5431
+      - 5432:5432
     networks:
       - spring-postgres
     environment:
@@ -20,7 +20,7 @@ services:
     build: .
     container_name: teamproject
     ports:
-      - 8001:8080
+      - 8080:8080
     networks:
       - spring-postgres
     environment:
@@ -29,8 +29,6 @@ services:
       - DB_PASSWORD=pswd-docker  # Password for docker user
     depends_on:
       - TPDB
-    volumes:
-      - ./data:/data  
     restart: always
 
 volumes:

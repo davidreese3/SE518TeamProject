@@ -1,8 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Serialization Demo</title>
+    <style>
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h1>Serialization Exploit Demo</h1>
@@ -12,6 +20,7 @@
     <button type="submit">Upload</button>
 </form>
 <h2>Result:</h2>
-<p th:utext="${message}">Upload a file to see the result.</p>
+<!-- Conditional class application based on messageType -->
+<p th:if="${message}" th:utext="${message}" th:classappend="${messageType}">Upload a file to see the result.</p>
 </body>
 </html>

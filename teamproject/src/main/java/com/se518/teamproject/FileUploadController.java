@@ -11,11 +11,15 @@ import java.io.ObjectInputStream;
 
 @Controller
 public class FileUploadController {
+    private static final String UPLOAD_DIR = "/data/";
         @PostMapping("/upload")
         public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
             try {
-                // Save the uploaded file temporarily
-                File tempFile = new File("/data/" + file.getOriginalFilename());
+                File uploadDir = new File(UPLOAD_DIR);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+                File tempFile = new File(uploadDir, file.getOriginalFilename());
                 file.transferTo(tempFile);
     
                 // Deserialize the file
@@ -27,13 +31,13 @@ public class FileUploadController {
                 e.printStackTrace();
                 model.addAttribute("message", "Error deserializing file: " + e.getMessage());
             }
-            return "FileUpload"; // Return the view name
+            return "FileUpload"; 
         }
     
-        @GetMapping("/upload") // Correct method for serving the form
+        @GetMapping("/upload") 
         public String showUploadForm(Model model) {
             model.addAttribute("message", "Upload a file to see the result.");
-            return "FileUpload"; // Return the HTML form view
+            return "FileUpload"; 
         }
     }
     

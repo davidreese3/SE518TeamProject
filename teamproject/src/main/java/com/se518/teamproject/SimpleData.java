@@ -17,6 +17,6 @@ public class SimpleData implements Serializable{
 
     @Override
     public String toString() {
-        return "Content: " + content;
+        return "File content: " + content;
     }
 }

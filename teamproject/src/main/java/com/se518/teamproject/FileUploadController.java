@@ -25,7 +25,7 @@ public class FileUploadController {
                 // Deserialize the file
                 try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(tempFile))) {
                     Object obj = ois.readObject();
-                    model.addAttribute("message", "Successfully deserialized: " + obj.toString());
+                    model.addAttribute("message", obj.toString());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
